@@ -37,6 +37,21 @@ share.me will start to listen to a random port and serve the file to anyone requ
 ## Sharing Server
 share.me can also be used as a sharing server, invoke it without a file and an ui will be started.
 From here you can browse your current directory and share any files here
+![sharing server](https://raw.githubusercontent.com/Pale-whale/share.me/main/server.png)
+You can navigate through your files with the up and down arrows and expand a directory with the right arrow
+You can share any selected file by hitting space or enter, an id will be generated and any request to that endpoint will be served with the file
+
+```bash
+$ curl -i http://192.168.1.31:8080/65a78642
+HTTP/1.1 200 OK
+Content-Disposition: attachment; filename=README.md
+Content-Type:
+Date: Sun, 04 Jun 2023 02:03:38 GMT
+Transfer-Encoding: chunked
+
+# share.me
+share.me is a basic file sharing tool
+```
 
 ## Config
 share.me can be configurated, it will look for a config in `$HOME/.share.me.yaml` keep in mind that this location WILL change.
@@ -47,7 +62,7 @@ port: 8080
 ```
 will have for result that share.me will try to bind on port 8080 on startup
 ```bash
-$ share.me share.me 
+$ share.me share.me
 Using config file: /home/palewhale/.share.me.yaml
 addr: http://192.168.1.31:8080/
 file: share.me
