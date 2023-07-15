@@ -66,7 +66,7 @@ func share(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	id := server.ServeRootFile(args[0])
+	id := server.ServeFile(args[0], false)
 
 	displayInfos(server.Addr(), args[0], id)
 	server.Serve()

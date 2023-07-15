@@ -93,7 +93,7 @@ func (u *Ui) createTreeView() *tview.TreeView {
 	tree.SetSelectedFunc(func(node *tview.TreeNode) {
 		path := pathFromNode(node)
 		if path != "" {
-			id := u.sharing.ServeFile(path)
+			id := u.sharing.ServeFile(path, true)
 			u.AddServer(id, path)
 		}
 		return

@@ -3,6 +3,7 @@ package sharing
 import (
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/pale-whale/share.me/internal/archive"
 )
 
 type Server struct {
@@ -39,14 +41,19 @@ func (hdlr Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	io.Copy(w, file)
 }
 
-func (hdlr *Server) ServeRootFile(path string) string {
-	hdlr.files[""] = path
-	return ""
-}
-
-func (hdlr *Server) ServeFile(path string) string {
-	id := uuid.New()
-	strId := id.String()[0:8]
+func (hdlr *Server) ServeFile(path string, createId bool) string {
+	strId := ""
+	if createId {
+		id := uuid.New()
+		strId = id.String()[0:8]
+	}
+	fileinfo, err := os.Stat(path)
+	if os.IsNotExist(err) {
+		log.Fatal("File does not exist.")
+	}
+	if fileinfo.IsDir() {
+		archive.Tar(path, "/tmp/")
+	}
 	hdlr.files[strId] = path
 	return strId
 }
